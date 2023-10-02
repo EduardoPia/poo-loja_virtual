@@ -17,7 +17,7 @@ class Compra():
   def custo(self):
     custo = 0
     for produtos in itens:
-      custo = custo + Custo(produto, quantidade_comprada):
+      custo = custo + Item_de_compra.Custo(produto, quantidade_comprada):
     return custo #duvidas_aqui
     
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
