@@ -25,7 +25,11 @@ class Compra():
     item_adicionado = Item_de_compra(produto,quantidade_adquirida)
     itens.append(item_adicionado)
     
-  def remover_produto(self):
+  def remover_produto(self, indice_remover:int):
+    if(indice_remover<0 or indice_remover>(len(itens)-1) or type(indice_remover) is not int):
+      print("Item nao esta na lista ou input invalido")
+    else:
+      itens.pop(indice_remover-1)
 
   def atualizar_quantidade(self):
 
