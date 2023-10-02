@@ -6,7 +6,7 @@ from item_compra import Item_de_compra
 
 class Compra():
   
-  def __init__(self, cliente:Pessoa, itens:Produto):
+  def __init__(self, cliente:Pessoa):
     
     if(type(cliente is not Pessoa) or type(itens) is not Produto):
         print("Informacoes invalidas")
