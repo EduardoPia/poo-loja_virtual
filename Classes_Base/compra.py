@@ -17,19 +17,19 @@ class Compra():
   def custo(self):
     custo = 0
     for produtos in itens:
-      custo = custo + Item_de_compra.Custo(produto, quantidade_comprada):
-    return custo #duvidas_aqui
+      custo = custo + produtos.Custo():
+    return custo
     
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
-    item_adicionado = Item_de_compra(produto,quantidade_adquirida)
-    itens.append(item_adicionado) #precisa de return?
+    item_adicionado = Item_de_compra(produto, quantidade_adquirida)
+    itens.append(item_adicionado)
     
   def remover_produto(self, indice_remover:int):
     if(indice_remover<0 or indice_remover>(len(itens)-1) or type(indice_remover) is not int):
       print("Item nao esta na lista ou input invalido")
       return None
     else:
-      itens.pop(indice_remover-1) #precisa de return?
+      itens.pop(indice_remover-1)
 
   def atualizar_quantidade(self):
 
