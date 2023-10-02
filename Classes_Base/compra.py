@@ -23,13 +23,14 @@ class Compra():
   
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
     item_adicionado = Item_de_compra(produto,quantidade_adquirida)
-    itens.append(item_adicionado)
+    itens.append(item_adicionado) #precisa de return?
     
   def remover_produto(self, indice_remover:int):
     if(indice_remover<0 or indice_remover>(len(itens)-1) or type(indice_remover) is not int):
       print("Item nao esta na lista ou input invalido")
+      return None
     else:
-      itens.pop(indice_remover-1)
+      itens.pop(indice_remover-1) #precisa de return?
 
   def atualizar_quantidade(self):
 
