@@ -12,7 +12,7 @@ class Compra():
         print("Informacoes invalidas")
         return None
     self.cliente = cliente
-    self.itens = itens
+    self.itens = itens[]
 
   def custo(self):
     return Custo(produto, quantidade_comprada)
