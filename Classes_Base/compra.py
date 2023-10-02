@@ -31,6 +31,6 @@ class Compra():
     else:
       itens.pop(indice_remover-1)
 
-  def atualizar_quantidade(self):
+  def atualizar_quantidade(self, indice_atualizar, nova_quantidade):
 
   def visuzalizar_compra(self):
