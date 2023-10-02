@@ -8,11 +8,11 @@ class Compra():
   
   def __init__(self, cliente:Pessoa):
     
-    if(type(cliente is not Pessoa) or type(itens) is not Produto):
+    if(type(cliente is not Pessoa)):
         print("Informacoes invalidas")
         return None
     self.cliente = cliente
-    self.itens = itens[]
+    self.itens = []
 
   def custo(self):
     custo = 0
