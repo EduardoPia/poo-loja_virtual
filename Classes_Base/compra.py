@@ -20,7 +20,6 @@ class Compra():
       custo = custo + Custo(produto, quantidade_comprada):
     return custo #duvidas_aqui
     
-  
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
     item_adicionado = Item_de_compra(produto,quantidade_adquirida)
     itens.append(item_adicionado) #precisa de return?
