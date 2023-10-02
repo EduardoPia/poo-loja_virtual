@@ -20,7 +20,7 @@ class Compra():
       custo = custo + Custo(produto, quantidade_comprada):
     return custo
     #duvidas_aqui
-  def adicionar_produto(self):
+  def adicionar_produto(self, produto:Produto, quantidade_adicionada:int):
 
   def remover_produto(self):
 
