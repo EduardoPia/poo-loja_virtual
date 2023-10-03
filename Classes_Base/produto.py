@@ -33,4 +33,4 @@ class Produto:
     def atualizar_preco(self, novo_preco):
       if(type(novo_preco) is not float or novo_preco<=0):
           print("Valores invalidos")
-      self._preco = self.novo_preco
+      self._preco = novo_preco
