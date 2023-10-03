@@ -1,7 +1,7 @@
 # Definicao da classe produto
 class Produto:
     def __init__(self, nome:str, preco:float, categoria:str):
-      sel.nome = nome
+      self.nome = nome
       self._preco = 0
       self.categoria = categoria
       self._qtd_estoque = 0
@@ -9,7 +9,7 @@ class Produto:
   
     #retorna preco com desconto  
     def preco(self): 
-      return self._preco*self._desconto
+      return self._preco*(1-self._desconto)
         
     #incrementa a quantidade em estoque  
     def registrar_aquisicao(self,qtd_comprados):
