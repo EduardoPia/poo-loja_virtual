@@ -21,7 +21,11 @@ class Produto:
       return self._qtd_estoque
   
     def atualizar_desconto(self, novo_desconto):
-      if(...):
+      if(type(self.novo_desconto) is not float or self.novo_desconto<0 and self.novo_desconto>=1):
+          print("Valores invalidos")
+      self._desconto = self.novo_desconto
 
     def atualizar_preco(self, novo_preco):
-      if(...):
+      if(type(self.novo_preco) is not float or self.novo_preco<=0):
+          print("Valores invalidos")
+      self._preco = self.novo_preco
