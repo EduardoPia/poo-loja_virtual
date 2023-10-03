@@ -15,4 +15,4 @@ class Item_de_compra():
         return(self.produto.preco()*self.quantidade)
     
     def Atualiza_Quantidade(self, qtd):
-        sel.quantidade = qtd
+        self.quantidade = qtd
