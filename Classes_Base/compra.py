@@ -37,3 +37,5 @@ class Compra():
     itens[indice_atualizar-1].Atualiza_Quantidade(nova_quantidade)
     
   def visuzalizar_compra(self):
+    for n in itens:
+      print(f" {} - Valor unitario: {itens.preco()} Valor Total do produto:{itens.}")
