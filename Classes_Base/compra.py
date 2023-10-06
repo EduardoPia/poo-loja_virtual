@@ -41,5 +41,5 @@ class Compra():
     for n in itens:
       valor_total = valor_total + n.Custo()
       #imprime o valor de cada item, o valor total dos itens e o indice do item para ser removido.
-      print(f" {(itens.index(n)+1)} - Valor unitario: {n.preco()} Valor Total do produto:{n.Custo()}")
+      print(f"{(itens.index(n)+1)} - Valor unitario: {n.produto.preco()} Valor Total do produto:{n.Custo()}")
     print(f "O valor total da compra eh {valor_total}")
