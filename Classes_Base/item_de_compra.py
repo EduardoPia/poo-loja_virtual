@@ -14,6 +14,3 @@ class Item_de_compra():
     def Custo(self):
         return(self.produto.preco()*self.quantidade)
         
-    #metodo para usar em compra com a finalidade de atualizar a quantidade de um determinado  item.   
-    def Atualiza_Quantidade(self, qtd):
-        self.quantidade = qtd
