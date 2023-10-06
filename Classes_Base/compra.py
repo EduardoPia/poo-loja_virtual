@@ -16,8 +16,8 @@ class Compra():
 
   def custo(self):
     custo = 0
-    for produtos in itens:
-      custo = custo + produtos.Custo():
+    for item in itens:
+      custo = custo + item.Custo():
     return custo
     
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
@@ -25,16 +25,16 @@ class Compra():
     itens.append(item_adicionado)
     
   def remover_produto(self, indice_remover:int):
-    if(indice_remover<0 or indice_remover>(len(itens)-1) or type(indice_remover) is not int):
+    if(indice_remover<0 or indice_remover>(len(itens)) or type(indice_remover) is not int):
       print("Item nao esta na lista ou input invalido")
       return None
     else:
       itens.pop(indice_remover-1)
 
-  def atualizar_quantidade(self, indice_atualizar, nova_quantidade):
+  def atualizar_quantidade(self, indice_atualizar:int, nova_quantidade:int):
     if(type(nova_quantidade) is not int or nova_quantidade < 0):
       print("Quantidade invalida")
-    itens[indice_atualizar-1].Atualiza_Quantidade(nova_quantidade)
+    itens[indice_atualizar-1].quantidade = nova_quantidade
     
   def visuzalizar_compra(self):
     valor_total = 0.0
