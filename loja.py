@@ -1,6 +1,19 @@
 # Definicao da classe loja, a classe central do programa, que ira gerir todas as acoes de manipulacao de inventario e 
 # funcoes para que o usuario possa modificar a loja
 
+
+import Classes_Base
+Pessoa = Classes_Base.Pessoa
+Produto = Classes_Base.Produto
+Item_de_compra = Classes_Base.Item_de_compra
+Compra = Classes_Base.Compra
+
+class Loja():
+    def __init__(self):
+        self.produtos: list(Produto) = []
+        self.compra: list(Compra) = []
+        self.compra_aberta: Compra = None
+
     def iniciar_compra(self,cliente:Pessoa):
         if self.Compra_aberta == None:
             print("Erro: Ja existes uma compra aberta")
