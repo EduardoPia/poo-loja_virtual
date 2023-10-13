@@ -1,1 +1,0 @@
-# Arquivo init do pacote das classes de prestigio

@@ -1,1 +1,0 @@
-# Definicao da classe app, que sera utilizada para mediar a interacao do programa com o usuario
