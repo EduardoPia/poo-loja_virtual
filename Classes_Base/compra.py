@@ -8,32 +8,36 @@ class Compra():
   
   def __init__(self, cliente:Pessoa):
     
-    if(type(cliente is not Pessoa)):
-        print("Informacoes invalidas")
-        return None
-    self.cliente = cliente
-    self.itens = []
+    #if(type(cliente is not Pessoa)):
+    #    print("Informacoes invalidas")
+    #    return None
+    self.cliente:Pessoa = cliente
+    self.itens:list(Item_de_compra) = []
 
-  def custo(self):
+  def custo(self) -> float:
     custo = 0
     for item in self.itens:
       custo = custo + item.Custo()
     return custo
     
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
-    item_adicionado = Item_de_compra(produto, self.quantidade_adquirida)
+    if (type(quantidade_adiquirida) is not int):
+      print("Informacoes invalidas")
+      return None
+    item_adicionado = Item_de_compra(produto, quantidade_adiquirida)
     self.itens.append(item_adicionado)
     
   def remover_produto(self, indice_remover:int):
-    if(indice_remover<0 or indice_remover>(len(self.itens)) or type(indice_remover) is not int):
+    if(indice_remover<0) or (indice_remover>(len(self.itens))) or (type(indice_remover) is not int):
       print("Item nao esta na lista ou input invalido")
       return None
     else:
       self.itens.pop(indice_remover-1)
 
   def atualizar_quantidade(self, indice_atualizar:int, nova_quantidade:int):
-    if(type(nova_quantidade) is not int or nova_quantidade < 0):
-      print("Quantidade invalida")
+    if(type(nova_quantidade) is not int) or (nova_quantidade < 0) or (type(indice_atualizar) is not int):
+      print("Informacoes invalidas")
+      return None
     self.itens[indice_atualizar-1].quantidade = nova_quantidade
     
   def visuzalizar_compra(self):

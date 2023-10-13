@@ -7,9 +7,9 @@ class Pessoa():
             print("Informacoes invalidas")
             return None
         cpf = str(cpf)
-        self.nome = nome
-        self.email = email
-        self.cpf = cpf
+        self.nome:str = nome
+        self.email:str = email
+        self.cpf:str = cpf
         
     
     

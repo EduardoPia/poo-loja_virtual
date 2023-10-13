@@ -8,9 +8,9 @@ class Item_de_compra():
         if (type(produto) is not Produto) or (type(quantidade_comprada) is not int) or (quantidade_comprada<=0):
             print("Informacoes invalidas")
             return None
-        self.produto = produto
-        self.quantidade = quantidade_comprada
+        self.produto:Produto = produto
+        self.quantidade:int = quantidade_comprada
     
-    def Custo(self):
+    def Custo(self) -> float:
         return(self.produto.preco()*self.quantidade)
         
