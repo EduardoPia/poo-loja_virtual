@@ -3,7 +3,7 @@
 
 from Classes_Base.pessoa import Pessoa
 from Classes_Base.produto import Produto 
-#from Classes_Base.item_de_compra import Item_de_compra
+from Classes_Base.item_de_compra import Item_de_compra
 from Classes_Base.compra import Compra
 # import Classes_Base
 # Pessoa = Classes_Base.Pessoa
@@ -24,7 +24,7 @@ class Loja():
             return None
         self.compra_aberta = Compra(cliente)
     
-    def buscar_compra(self,codigo:str) -> Produto:
+    def buscar_produto(self,codigo:str) -> Produto:
         for produto in self.produtos:
             if produto.codigo == codigo:
                 return produto
@@ -34,7 +34,7 @@ class Loja():
         self.compra_aberta = None
         
     def finalizar_compra(self):
-        self.compras.append(self.Compra_aberta)
+        self.compras.append(self.compra_aberta)
         for item in self.compra_aberta.itens:
             for i in range(len(self.produtos)):
                 if self.produtos[i].codigo == item.produto.codigo:
@@ -90,7 +90,7 @@ class Loja():
             if compra.cliente.nome == nome_maior:
                 return compra.cliente
     
-    def r_5_mais_caros(self) -> list(Produto):
+    def r_5_mais_caros(self) -> list:
         top:list(Produto) = []
         for produto in self.produtos:
             for prod in top:
@@ -120,17 +120,90 @@ class Loja():
             prod_vendidos.pop(quantidade_vendidos.index(max(quantidade_vendidos)))
             quantidade_vendidos.pop(quantidade_vendidos.index(max(quantidade_vendidos)))
                      
-                    
-                
-            
+    def r_usuarios_compras(self):
+        lista_usu:list(str) = [self.compras[0].cliente.nome]
+        lista_cpf:list(int) = [] 
+        total_compras:list(float) = []
+        for usu in lista_usu:
+            total_compras.append(0.0)
         
-                  
+        for compra in self.compras:
+            for nome_usuario in lista_usu:
+                if nome_usuario == compra.cliente.nome:
+                    break
+            lista_usu.append(nome_usuario)
+        lista_usu = sorted(lista_usu) 
+        
+        for compra in self.compras:
+            total_compras[lista_usu.index(compra.cliente.nome)] += compra.custo()
             
+        for usu in lista_usu:
+            for compra in self.compras:
+                if compra.cliente.nome == usu:
+                    lista_cpf.append(compra.cliente.cpf)
+                    break
+        for i in range(lista_usu):
+            print(f"i. {lista_usu[i]} cpf: {lista_cpf[i]} compras: {total_compras[i]}")
+        
+    def salvar(self, nome_arq):
+        '''
+        Modo de salvamento:
+        linha 0 até n-1: salvamento dos n produtos, um em cada linha no seguinte formato: 
+            produto,{nome},{preco},{quantidade},{desconto},{categoria},{codigo}
+        linha n até n+m-1: salvamento das m compras realizadas, uma em cada linha no seguinte formato:
+            compra,{cliente.nome},{cliente.email},{cliente.cpf},{itens[1].quantidade},{itens[1].produto.nome},...
+            ...{itens[1].produto.preco},{itens[1].produto.quantidade},{itens[1].produto.desconto},{itens[1].produto.categoria},...
+            ...{itens[1].produto.codigo} ... ... ,{itens[k].quantidade},{itens[k].produto.nome},...
+            ...{itens[k].produto.preco},{itens[k].produto.quantidade},{itens[k].produto.desconto},{itens[k].produto.categoria},...
+            ...{itens[k].produto.codigo}
+        '''
+        with open (nome_arq,"w") as arq:
+            for produto in self.produtos:
+                arq.write(f"produto,{produto.nome},{produto.get_preco()},{produto.quantidade_em_estoque()},")
+                arq.write(f"{produto.get_desconto()},{produto.categoria},{produto.codigo}\n")
+            for compra in self.compras:
+                arq.write(f"compra,{compra.cliente.nome},{compra.cliente.email},{compra.cliente.cpf},")    
+                for item in compra.itens:
+                    arq.write(f"{item.quantidade},")
+                    arq.write(f"{item.produto.nome},{item.produto.get_preco()},{item.produto.quantidade_em_estoque()},")
+                    arq.write(f"{item.produto.get_desconto()},{item.produto.categoria},{item.produto.codigo}\n")
+    
+    def carregar(self, nome_arq):
+        with open(nome_arq,"r") as arq:
+            linhas = arq.readlines()
+            for i in range(len(linhas)):
+                linhas[i] = linhas[i].strip("\n")
+                linhas[i] = linhas[i].split(",")
+                if linhas[i][0] == "produto":
+                    self.produtos.append(Produto(linhas[i][1],linhas[i][2],linhas[i][5],linhas[i][6]))
+                    self.produtos[i].registrar_aquisicao(linhas[i][3])
+                    self.produtos[i].atualizar_desconto(linhas[i][4])
+                else:
+                    cliente = Pessoa(linhas[i][1],linhas[i][2],linhas[i][3])
+                    self.compras.append(Compra(cliente)) 
+                    k = (4-len(linhas[i]))/7 #numero de itens
+                    for j in range(k):
+                        prod = Produto(linhas[i][j+5],linhas[i][j+6],linhas[i][j+9],linhas[i][j+10])
+                        prod.registrar_aquisicao(linhas[i][j+7])
+                        prod.atualizar_desconto(linhas[i][j+8]) 
+                        self.compras.itens.append(Item_de_compra(prod,linhas[i][j+4]))                        
+             
 
-
-
-# loj = Loja()
-# client = Pessoa("jose","dudu@gmail","198775")
-# loj.iniciar_compra(client)
-
-  
+loj = Loja()
+eu = Pessoa("eduardo","dudu@gm","198")
+outro = Pessoa("outro","outro@gmai","197")
+o_outro = Pessoa("o outro","o@hotmail","196")
+produto_1 = Produto("leite",5.0,"comida","AB1")
+produto_2 = Produto("molho",3.0,"comida","AB2")
+produto_3 = Produto("geladeira",1000.1,"eletrodomestico","AB3")
+loj.produtos.append(produto_1)
+loj.produtos.append(produto_2)
+loj.produtos.append(produto_3)
+loj.produtos[0].registrar_aquisicao(2)
+loj.produtos[1].registrar_aquisicao(5)
+loj.iniciar_compra(eu)
+print(type(loj.compra_aberta))
+loj.compra_aberta.adicionar_produto(produto_1,2)
+loj.finalizar_compra()
+#loj.cancelar_compra()
+#loj.iniciar_compra(outro)
