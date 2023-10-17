@@ -12,6 +12,20 @@ from Classes_Base.compra import Compra
 # Compra = Classes_Base.Compra
 
 
+def printaCompra (compra:Compra):
+    print(f"Nome: {compra.cliente.nome}")
+    print(f"email: {compra.cliente.email}")
+    print(f"cpf: {compra.cliente.cpf}")
+    for item in compra.itens:
+        print(f"quantidade: {item.quantidade}")
+        print(f"prod_nome: {item.produto.nome}")
+        print(f"prod_preco: {item.produto.get_preco()}")
+        print(f"prod_quantidade: {item.produto.quantidade_em_estoque()}")
+        print(f"prod_desconto: {item.produto.get_desconto()}")
+        print(f"prod_categoria: {item.produto.categoria}")
+        print(f"prod_preco: {item.produto.codigo}")
+
+
 
 class Loja():
     
@@ -41,13 +55,10 @@ class Loja():
         for item in self.compra_aberta.itens:
             for i in range(len(self.produtos)):
                 if self.produtos[i].codigo == item.produto.codigo:
-                    print("oi")
-                    print(self.produtos[i].quantidade_em_estoque())
-                    print(item.produto.quantidade_em_estoque())
-                    if self.produtos[i].quantidade_em_estoque() < item.produto.quantidade_em_estoque():
+                    if self.produtos[i].quantidade_em_estoque() < item.quantidade:
                         print(f"Erro: Quantidade insuficiente no estoque de {item.produto.codigo}")
                         return None
-                    vendidos_quantidade.append(item.produto.quantidade_em_estoque())
+                    vendidos_quantidade.append(item.quantidade)
                     vendidos_indice.append(i)
                     break
         for j in range(len(vendidos_indice)):
@@ -83,7 +94,7 @@ class Loja():
                 if usuario == compra.cliente.nome:
                     break
             num += 1
-            lista_usu.append(compra.client.nome)       
+            lista_usu.append(compra.cliente.nome)       
         return num     
 
     def r_usuario_mais_compras(self) -> Pessoa:
@@ -180,7 +191,8 @@ class Loja():
                 for item in compra.itens:
                     arq.write(f"{item.quantidade},")
                     arq.write(f"{item.produto.nome},{item.produto.get_preco()},{item.produto.quantidade_em_estoque()},")
-                    arq.write(f"{item.produto.get_desconto()},{item.produto.categoria},{item.produto.codigo}\n")
+                    arq.write(f"{item.produto.get_desconto()},{item.produto.categoria},{item.produto.codigo}")
+                arq.write("\n")
     
     def carregar(self, nome_arq):
         with open(nome_arq,"r") as arq:
@@ -189,20 +201,29 @@ class Loja():
                 linhas[i] = linhas[i].strip("\n")
                 linhas[i] = linhas[i].split(",")
                 if linhas[i][0] == "produto":
-                    self.produtos.append(Produto(linhas[i][1],linhas[i][2],linhas[i][5],linhas[i][6]))
-                    self.produtos[i].registrar_aquisicao(linhas[i][3])
-                    self.produtos[i].atualizar_desconto(linhas[i][4])
+                    self.produtos.append(Produto(linhas[i][1],float(linhas[i][2]),linhas[i][5],linhas[i][6]))
+                    self.produtos[i].registrar_aquisicao(int(linhas[i][3]))
+                    self.produtos[i].atualizar_desconto(float(linhas[i][4]))
                 else:
                     cliente = Pessoa(linhas[i][1],linhas[i][2],linhas[i][3])
                     self.compras.append(Compra(cliente)) 
-                    k = (4-len(linhas[i]))/7 #numero de itens
+                    print(f"Linhas: {len(linhas[i])}")
+                    k = (len(linhas[i])-4)//7 #numero de itens
+                    print(f"k: {k}")
                     for j in range(k):
-                        prod = Produto(linhas[i][j+5],linhas[i][j+6],linhas[i][j+9],linhas[i][j+10])
-                        prod.registrar_aquisicao(linhas[i][j+7])
-                        prod.atualizar_desconto(linhas[i][j+8]) 
-                        self.compras.itens.append(Item_de_compra(prod,linhas[i][j+4]))                        
+                        prod = Produto(linhas[i][j+5],float(linhas[i][j+6]),linhas[i][j+9],linhas[i][j+10])
+                        prod.registrar_aquisicao(int(linhas[i][j+7]))
+                        prod.atualizar_desconto(float(linhas[i][j+8]))
+                        self.compras[len(self.compras)-1].itens.append(Item_de_compra(prod,int(linhas[i][j+4])))                        
              
-
+#loj = Loja()
+#loj.carregar("loja.txt")
+#print(f"quantidade prod_2: {loj.produtos[1].quantidade_em_estoque()}")
+#printaCompra(loj.compras[1])
+#print(loj.r_numero_produtos())
+#print(loj.r_valor_tot_vend())
+#print(loj.r_valor_med_compras())
+#print(loj.r_numero_usuarios())
 
 eu = Pessoa("eduardo","dudu@gm","198")
 outro = Pessoa("outro","outro@gmai","197")
@@ -210,26 +231,25 @@ o_outro = Pessoa("o outro","o@hotmail","196")
 produto_1 = Produto("leite",5.0,"comida","AB1")
 produto_2 = Produto("molho",3.0,"comida","AB2")
 produto_3 = Produto("geladeira",1000.1,"eletrodomestico","AB3")
-
 loj = Loja()
 loj.produtos.append(produto_1)
 loj.produtos.append(produto_2)
 loj.produtos.append(produto_3)
-#print(loj.produtos)
-loj.produtos[0].registrar_aquisicao(3)
+loj.produtos[0].registrar_aquisicao(5)
 loj.produtos[1].registrar_aquisicao(5)
-
-#print(f"{loj.produtos[0].quantidade_estoque()}" )
-#print(f"{loj.produtos[1].quantidade_estoque()}" )
-#print(f"{loj.produtos[2].quantidade_estoque()}" )
-
 loj.iniciar_compra(eu)
 loj.compra_aberta.adicionar_produto(produto_1,2)
 loj.finalizar_compra()
+loj.iniciar_compra(outro)
+loj.compra_aberta.adicionar_produto(produto_1,3)
+loj.compra_aberta.adicionar_produto(produto_2,3)
+loj.finalizar_compra()
+loj.iniciar_compra(outro)
+loj.compra_aberta.adicionar_produto(produto_2,1)
+loj.finalizar_compra()
+loj.iniciar_compra(outro)   
+loj.compra_aberta.adicionar_produto(produto_3,2)
+print(f"item_quantidade = {loj.compras[1].itens[1].quantidade}")
 
-#loj.iniciar_compra(outro)
-#loj.compra_aberta.adicionar_produto(produto_1,3)
-#loj.finalizar_compra()
 
-#loj.cancelar_compra()
-#loj.iniciar_compra(outro)
+loj.salvar("loja.txt")
