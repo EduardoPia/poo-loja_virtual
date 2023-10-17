@@ -1,8 +1,8 @@
 # Definicao da classe app, que sera utilizada para mediar a interacao do programa com o usuario
-# Definicao da classe app, que sera utilizada para mediar a interacao do programa com o usuario
 from loja import Loja
 from Classes_Base.produto import Produto
-
+from Classes_Base.compra import Compra
+from Classes_Base.pessoa import Pessoa
 
 class App:
     def __init__(self):
@@ -83,20 +83,23 @@ class App:
                 produto = self.loja.buscar_produto(cod)
                 self.loja.produtos.pop(produto)
 
-            elif opc == 7:
-                pass
+            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra
+                nome = input("Digite o nome: ")
+                email = input("Digite seu email: ")
+                cpf = input("Digite seu cpf: ")
+                nova_compra = self.loja.iniciar_compra(Pessoa(nome, email, cpf))
 
-            elif opc == 8:
-                pass
+            elif opc == 8: #utiliza o metodo cancelar compra de loja
+                self.loja.cancelar_compra()
 
-            elif opc == 9:
-                pass
+            elif opc == 9: #utiliza o metodo finalizar compra de loja
+                self.loja.finalizar_compra()
 
             elif opc == 10:
                 pass
 
-            elif opc == 11:
-                pass
+            elif opc == 11: #imprime a compra, duvidas aqui
+                Loja.printaCompra()
 
             elif opc == 12:
                 pass
@@ -133,6 +136,3 @@ class App:
 
             elif opc == 23:
                 break
-
-
-
