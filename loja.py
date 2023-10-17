@@ -11,6 +11,8 @@ from Classes_Base.compra import Compra
 # Item_de_compra = Classes_Base.Item_de_compra
 # Compra = Classes_Base.Compra
 
+
+
 class Loja():
     
     def __init__(self):
@@ -34,11 +36,23 @@ class Loja():
         self.compra_aberta = None
         
     def finalizar_compra(self):
-        self.compras.append(self.compra_aberta)
+        vendidos_quantidade:list(int) = []
+        vendidos_indice:list(int) = []
         for item in self.compra_aberta.itens:
             for i in range(len(self.produtos)):
                 if self.produtos[i].codigo == item.produto.codigo:
-                    self.produtos[i].registrar_venda(item.produto.quantidade_estoque)
+                    print("oi")
+                    print(self.produtos[i].quantidade_em_estoque())
+                    print(item.produto.quantidade_em_estoque())
+                    if self.produtos[i].quantidade_em_estoque() < item.produto.quantidade_em_estoque():
+                        print(f"Erro: Quantidade insuficiente no estoque de {item.produto.codigo}")
+                        return None
+                    vendidos_quantidade.append(item.produto.quantidade_em_estoque())
+                    vendidos_indice.append(i)
+                    break
+        for j in range(len(vendidos_indice)):
+            self.produtos[vendidos_indice[j]].registrar_venda(vendidos_quantidade[j])
+        self.compras.append(self.compra_aberta)
         self.compra_aberta = None   
   
     def r_numero_produtos(self) -> int:
@@ -189,21 +203,33 @@ class Loja():
                         self.compras.itens.append(Item_de_compra(prod,linhas[i][j+4]))                        
              
 
-loj = Loja()
+
 eu = Pessoa("eduardo","dudu@gm","198")
 outro = Pessoa("outro","outro@gmai","197")
 o_outro = Pessoa("o outro","o@hotmail","196")
 produto_1 = Produto("leite",5.0,"comida","AB1")
 produto_2 = Produto("molho",3.0,"comida","AB2")
 produto_3 = Produto("geladeira",1000.1,"eletrodomestico","AB3")
+
+loj = Loja()
 loj.produtos.append(produto_1)
 loj.produtos.append(produto_2)
 loj.produtos.append(produto_3)
-loj.produtos[0].registrar_aquisicao(2)
+#print(loj.produtos)
+loj.produtos[0].registrar_aquisicao(3)
 loj.produtos[1].registrar_aquisicao(5)
+
+#print(f"{loj.produtos[0].quantidade_estoque()}" )
+#print(f"{loj.produtos[1].quantidade_estoque()}" )
+#print(f"{loj.produtos[2].quantidade_estoque()}" )
+
 loj.iniciar_compra(eu)
-print(type(loj.compra_aberta))
 loj.compra_aberta.adicionar_produto(produto_1,2)
 loj.finalizar_compra()
+
+#loj.iniciar_compra(outro)
+#loj.compra_aberta.adicionar_produto(produto_1,3)
+#loj.finalizar_compra()
+
 #loj.cancelar_compra()
 #loj.iniciar_compra(outro)

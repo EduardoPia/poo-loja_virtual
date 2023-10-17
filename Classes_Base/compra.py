@@ -22,7 +22,6 @@ class Compra():
     
   def adicionar_produto(self, produto:Produto, quantidade_adiquirida:int):
     if (type(quantidade_adiquirida) is not int):
-      print("oi")
       print("Informacoes invalidas")
       return None
     item_adicionado = Item_de_compra(produto, quantidade_adiquirida)
