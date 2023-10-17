@@ -3,7 +3,7 @@ from loja import Loja
 from Classes_Base.produto import Produto
 from Classes_Base.compra import Compra
 from Classes_Base.pessoa import Pessoa
-
+from Classes_Base.item_de_compra import Item_de_compra
 class App:
     def __init__(self):
         self.loja = Loja()
@@ -83,7 +83,7 @@ class App:
                 produto = self.loja.buscar_produto(cod)
                 self.loja.produtos.pop(produto)
 
-            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra
+            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra, REVER AQUI
                 nome = input("Digite o nome: ")
                 email = input("Digite seu email: ")
                 cpf = input("Digite seu cpf: ")
@@ -96,7 +96,13 @@ class App:
                 self.loja.finalizar_compra()
 
             elif opc == 10:
-                pass
+                cod = input("Digite o codigo do produto: ")
+                qtd = int(input("Digite a quantidade do produto: "))
+                produto = self.loja.buscar_produto(cod)
+                if produto not in self.loja.compras:
+                    self.loja.compras.append(Item_de_compra(produto, qtd))
+                else:
+                    print("Produto ja esta na lista de compras")
 
             elif opc == 11: #imprime a compra, duvidas aqui
                 Loja.printaCompra()
