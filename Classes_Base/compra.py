@@ -24,7 +24,10 @@ class Compra():
     if (type(quantidade_adiquirida) is not int):
       print("Informacoes invalidas")
       return None
-    item_adicionado = Item_de_compra(produto, quantidade_adiquirida)
+    novo_prod = Produto(produto.nome,produto.get_preco(),produto.categoria,produto.codigo)
+    novo_prod.atualizar_desconto(produto.get_desconto())
+    novo_prod.registrar_aquisicao(1)
+    item_adicionado = Item_de_compra(novo_prod, quantidade_adiquirida)
     self.itens.append(item_adicionado)
     
   def remover_produto(self, indice_remover:int):
