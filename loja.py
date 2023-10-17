@@ -92,6 +92,7 @@ class Loja():
         for compra in self.compras:
             for usuario in lista_usu:
                 if usuario == compra.cliente.nome:
+                    num -= 1
                     break
             num += 1
             lista_usu.append(compra.cliente.nome)       
@@ -106,7 +107,7 @@ class Loja():
         quantias:list(int) = [1]
         for i in range(1,len(lista_usu)):
             if lista_usu[i] == lista_usu[i-1]:
-                quantias[len(quantias)] += 1
+                quantias[len(quantias)-1] += 1
             else:
                 lista_nov.append(lista_usu[i])
                 quantias.append(1)
@@ -120,55 +121,59 @@ class Loja():
         for produto in self.produtos:
             for prod in top:
                 if produto.preco() > prod.preco():
-                    top.insert(produto)
+                    top.insert(top.index(prod),produto)
                     break
-                top.append(produto)
+            top.append(produto)
         top_5:list(Produto) = []
         for i in range(len(top)):
             top_5.append(top[i])
         return top_5
     
     def r_5_mais_vendidos(self):
-        prod_vendidos:list(str) = []
-        quantidade_vendidos:list(int) = []
+        prod_vends:list(str) = []
+        qnt_vends:list(int) = []
+        preco_vends:list(float) = []
         for compra in self.compras:
             for item in compra.itens:
-                for prod in prod_vendidos:
-                    if item.produto.nome == prod:
-                        quantidade_vendidos[prod_vendidos.index(prod)] += item.quantidade
-                        break
-                    if prod == prod_vendidos[len(prod_vendidos)]:
-                        prod_vendidos.append(item.produto.nome)
-                        quantidade_vendidos.append(item.quantidade)
-        for i in range(5):
-            print(f"{i}. {prod_vendidos[quantidade_vendidos.index(max(quantidade_vendidos))]} R${quantidade_vendidos[quantidade_vendidos.index(max(quantidade_vendidos))]}")  
-            prod_vendidos.pop(quantidade_vendidos.index(max(quantidade_vendidos)))
-            quantidade_vendidos.pop(quantidade_vendidos.index(max(quantidade_vendidos)))
+                if item.produto.nome in prod_vends:
+                    qnt_vends[prod_vends.index(item.produto.nome)] += item.quantidade
+                    preco_vends[prod_vends.index(item.produto.nome)] += item.quantidade*item.produto.preco()
+
+                else:
+                    prod_vends.append(item.produto.nome)
+                    qnt_vends.append(item.quantidade)
+                    preco_vends.append(item.quantidade*item.produto.preco())
+        for i in range(min(5,len(qnt_vends))):
+            j = qnt_vends.index(max(qnt_vends))
+            print(f"{i}. {prod_vends[j]} R${preco_vends[j]}")  
+            prod_vends.pop(j)
+            preco_vends.pop(j)
+            qnt_vends.pop(j)
                      
     def r_usuarios_compras(self):
-        lista_usu:list(str) = [self.compras[0].cliente.nome]
-        lista_cpf:list(int) = [] 
-        total_compras:list(float) = []
-        for usu in lista_usu:
-            total_compras.append(0.0)
-        
+        lista_usu:list(str) = []
         for compra in self.compras:
-            for nome_usuario in lista_usu:
-                if nome_usuario == compra.cliente.nome:
-                    break
-            lista_usu.append(nome_usuario)
-        lista_usu = sorted(lista_usu) 
-        
-        for compra in self.compras:
-            total_compras[lista_usu.index(compra.cliente.nome)] += compra.custo()
-            
+            if compra.cliente.nome not in lista_usu:
+                lista_usu.append(compra.cliente.nome)
+        lista_usu = sorted(lista_usu)
+
+        lista_cpf:list(str) = []
         for usu in lista_usu:
             for compra in self.compras:
-                if compra.cliente.nome == usu:
+                if usu == compra.cliente.nome:
                     lista_cpf.append(compra.cliente.cpf)
                     break
-        for i in range(lista_usu):
-            print(f"i. {lista_usu[i]} cpf: {lista_cpf[i]} compras: {total_compras[i]}")
+
+        lista_gasto:list(float) = []
+        for i in range(len(lista_usu)):
+            lista_gasto.append(0.0)
+            for compra in self.compras:
+                if compra.cliente.nome == lista_usu[i]:
+                    lista_gasto[i] += compra.custo()
+
+        for i in range(len(lista_usu)):
+            print(f"Nome: {lista_usu[i]} CPF: {lista_cpf[i]} Valor: {lista_gasto[i]}")
+
         
     def salvar(self, nome_arq):
         '''
@@ -187,11 +192,11 @@ class Loja():
                 arq.write(f"produto,{produto.nome},{produto.get_preco()},{produto.quantidade_em_estoque()},")
                 arq.write(f"{produto.get_desconto()},{produto.categoria},{produto.codigo}\n")
             for compra in self.compras:
-                arq.write(f"compra,{compra.cliente.nome},{compra.cliente.email},{compra.cliente.cpf},")    
+                arq.write(f"compra,{compra.cliente.nome},{compra.cliente.email},{compra.cliente.cpf}")    
                 for item in compra.itens:
-                    arq.write(f"{item.quantidade},")
-                    arq.write(f"{item.produto.nome},{item.produto.get_preco()},{item.produto.quantidade_em_estoque()},")
-                    arq.write(f"{item.produto.get_desconto()},{item.produto.categoria},{item.produto.codigo}")
+                    arq.write(f",{item.quantidade}")
+                    arq.write(f",{item.produto.nome},{item.produto.get_preco()},{item.produto.quantidade_em_estoque()}")
+                    arq.write(f",{item.produto.get_desconto()},{item.produto.categoria},{item.produto.codigo}")
                 arq.write("\n")
     
     def carregar(self, nome_arq):
@@ -200,6 +205,7 @@ class Loja():
             for i in range(len(linhas)):
                 linhas[i] = linhas[i].strip("\n")
                 linhas[i] = linhas[i].split(",")
+                #print(linhas[i])
                 if linhas[i][0] == "produto":
                     self.produtos.append(Produto(linhas[i][1],float(linhas[i][2]),linhas[i][5],linhas[i][6]))
                     self.produtos[i].registrar_aquisicao(int(linhas[i][3]))
@@ -207,49 +213,51 @@ class Loja():
                 else:
                     cliente = Pessoa(linhas[i][1],linhas[i][2],linhas[i][3])
                     self.compras.append(Compra(cliente)) 
-                    print(f"Linhas: {len(linhas[i])}")
                     k = (len(linhas[i])-4)//7 #numero de itens
-                    print(f"k: {k}")
                     for j in range(k):
-                        prod = Produto(linhas[i][j+5],float(linhas[i][j+6]),linhas[i][j+9],linhas[i][j+10])
-                        prod.registrar_aquisicao(int(linhas[i][j+7]))
-                        prod.atualizar_desconto(float(linhas[i][j+8]))
-                        self.compras[len(self.compras)-1].itens.append(Item_de_compra(prod,int(linhas[i][j+4])))                        
+                        prod = Produto(linhas[i][7*j+5],float(linhas[i][7*j+6]),linhas[i][7*j+9],linhas[i][7*j+10])
+                        prod.registrar_aquisicao(int(linhas[i][7*j+7]))
+                        prod.atualizar_desconto(float(linhas[i][7*j+8]))
+                        self.compras[len(self.compras)-1].itens.append(Item_de_compra(prod,int(linhas[i][7*j+4])))                        
              
 #loj = Loja()
 #loj.carregar("loja.txt")
-#print(f"quantidade prod_2: {loj.produtos[1].quantidade_em_estoque()}")
-#printaCompra(loj.compras[1])
 #print(loj.r_numero_produtos())
+#print(loj.r_numero_vendas())
 #print(loj.r_valor_tot_vend())
 #print(loj.r_valor_med_compras())
 #print(loj.r_numero_usuarios())
-
-eu = Pessoa("eduardo","dudu@gm","198")
-outro = Pessoa("outro","outro@gmai","197")
-o_outro = Pessoa("o outro","o@hotmail","196")
-produto_1 = Produto("leite",5.0,"comida","AB1")
-produto_2 = Produto("molho",3.0,"comida","AB2")
-produto_3 = Produto("geladeira",1000.1,"eletrodomestico","AB3")
-loj = Loja()
-loj.produtos.append(produto_1)
-loj.produtos.append(produto_2)
-loj.produtos.append(produto_3)
-loj.produtos[0].registrar_aquisicao(5)
-loj.produtos[1].registrar_aquisicao(5)
-loj.iniciar_compra(eu)
-loj.compra_aberta.adicionar_produto(produto_1,2)
-loj.finalizar_compra()
-loj.iniciar_compra(outro)
-loj.compra_aberta.adicionar_produto(produto_1,3)
-loj.compra_aberta.adicionar_produto(produto_2,3)
-loj.finalizar_compra()
-loj.iniciar_compra(outro)
-loj.compra_aberta.adicionar_produto(produto_2,1)
-loj.finalizar_compra()
-loj.iniciar_compra(outro)   
-loj.compra_aberta.adicionar_produto(produto_3,2)
-print(f"item_quantidade = {loj.compras[1].itens[1].quantidade}")
+#print(loj.r_usuario_mais_compras().nome)
+#mais_caros = loj.r_5_mais_caros()
+#print(mais_caros[1].nome)
+#loj.r_5_mais_vendidos()
+#loj.r_usuarios_compras()
 
 
-loj.salvar("loja.txt")
+
+# eu = Pessoa("eduardo","dudu@gm","198")
+# outro = Pessoa("outro","outro@gmai","197")
+# o_outro = Pessoa("o outro","o@hotmail","196")
+# produto_1 = Produto("leite",5.0,"comida","AB1")
+# produto_2 = Produto("molho",3.0,"comida","AB2")
+# produto_3 = Produto("geladeira",1000.1,"eletrodomestico","AB3")
+# loj = Loja()
+# loj.produtos.append(produto_1)
+# loj.produtos.append(produto_2)
+# loj.produtos.append(produto_3)
+# loj.produtos[0].registrar_aquisicao(5)
+# loj.produtos[1].registrar_aquisicao(5)
+# loj.iniciar_compra(eu)
+# loj.compra_aberta.adicionar_produto(produto_1,2)
+# loj.finalizar_compra()
+# loj.iniciar_compra(outro)
+# loj.compra_aberta.adicionar_produto(produto_1,3)
+# loj.compra_aberta.adicionar_produto(produto_2,3)
+# loj.finalizar_compra()
+# loj.iniciar_compra(outro)
+# loj.compra_aberta.adicionar_produto(produto_2,1)
+# loj.finalizar_compra()
+# loj.iniciar_compra(outro)   
+# loj.compra_aberta.adicionar_produto(produto_3,2)
+# print(f"item_quantidade = {loj.compras[1].itens[1].quantidade}")
+## loj.salvar("loja.txt")
