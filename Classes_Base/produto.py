@@ -33,7 +33,6 @@ class Produto():
     def registrar_venda(self, quantidade_vendida:int):
         if (type(quantidade_vendida) is not int) or (quantidade_vendida>self.__quantidade) or (quantidade_vendida<0):
             print("Informacoes invalidas")
-            print("Oi")
             return None
         self.__quantidade -= quantidade_vendida
         
@@ -55,4 +54,4 @@ class Produto():
             return None
         novo_preco = float(novo_preco)
         self.__preco = novo_preco
-    
+   
