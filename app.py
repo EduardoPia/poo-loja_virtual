@@ -83,35 +83,38 @@ class App:
                 produto = self.loja.buscar_produto(cod)
                 self.loja.produtos.pop(produto)
 
-            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra, REVER AQUI
+            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra, REVER
                 nome = input("Digite o nome: ")
                 email = input("Digite seu email: ")
                 cpf = input("Digite seu cpf: ")
                 nova_compra = self.loja.iniciar_compra(Pessoa(nome, email, cpf))
 
             elif opc == 8: #utiliza o metodo cancelar compra de loja
-                self.loja.cancelar_compra()
+                self.loja.compra_aberta.cancelar_compra()
 
             elif opc == 9: #utiliza o metodo finalizar compra de loja
-                self.loja.finalizar_compra()
+                self.loja.compra_aberta.finalizar_compra()
 
-            elif opc == 10:
+            elif opc == 10: #adiciona item na lista de compras
                 cod = input("Digite o codigo do produto: ")
                 qtd = int(input("Digite a quantidade do produto: "))
                 produto = self.loja.buscar_produto(cod)
                 if produto not in self.loja.compras:
-                    self.loja.compras.append(Item_de_compra(produto, qtd))
+                    self.loja.compra_aberta.append(Item_de_compra(produto, qtd))
                 else:
                     print("Produto ja esta na lista de compras")
 
             elif opc == 11: #imprime a compra, duvidas aqui
                 Loja.printaCompra()
 
-            elif opc == 12:
-                pass
+            elif opc == 12: #remove o produto por indice
+                indice = int(input("Digite o indice do produto: "))
+                self.loja.compra_aberta.pop(indice-1)
 
-            elif opc == 13:
-                pass
+            elif opc == 13: #atualiza a quantidade por indice, REVER AQUI
+                indice = int(input("Digite o indice do produto: "))
+                nova_qtd = int(input("Digite a nova quatidade do produto: "))
+                self.loja.compra_aberta.itens.quantidade[indice-1]= nova_qtd
 
             elif opc == 14:
                 pass
