@@ -15,7 +15,7 @@ class Compra():
     self.itens:list(Item_de_compra) = []
 
   def custo(self) -> float:
-    custo = 0
+    custo = 0.0
     for item in self.itens:
       custo = custo + item.Custo()
     return custo
