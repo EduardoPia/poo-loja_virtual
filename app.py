@@ -33,21 +33,27 @@ class App:
         print("22. Relatório - Montante por pessoa")
         print("23. Sair\n")
 
-        opcao = int(input("Escolha uma opcao:"))
+        opcao = input("Escolha uma opcao:")
+        try:
+            opcao = int(opcao)
+        except:
+            print("Opcao invalida")
+            opcao = self.menu()
         return opcao
     
     def executar(self):
         while True:
             opc = self.menu()
             if opc == 1: #cadastra um produto na loja
-                nome =  input("Digite o nome: ")
-                preco = float(input("Digite o preco: "))
-                categoria = input("Digite a categoria: ")
-                codigo = input("Digite o codigo: ")
-                
-                produtinho = Produto(nome,preco, categoria ,codigo)
-                
-                self.loja.produtos.append(produtinho)
+                try:
+                    nome =  input("Digite o nome: ")
+                    preco = float(input("Digite o preco: "))
+                    categoria = input("Digite a categoria: ")
+                    codigo = input("Digite o codigo: ")
+                    produtinho = Produto(nome,preco, categoria ,codigo)
+                    self.loja.produtos.append(produtinho)
+                except:
+                    print("informacoes invalidas, produto nao adicionado")
 
             elif opc == 2: # imprime lista de produtos na loja 
                 # imprime indice, codigo, nome e valor com desconto
@@ -57,37 +63,51 @@ class App:
             elif opc == 3: #imprime informacoes do produto buscado por codigo
                 cod = input("Digite o codigo do produto: ")
                 produto =self.loja.buscar_produto(cod)
-
-                print(f"NOME: {produto.nome}")
-                print(f"QUANTIDADE: {produto.quantidade_em_estoque()}")
-                print(f"DESCONTO: {produto.get_desconto}")
-                print(f"PRECO COM DESCONTO: {produto.preco()}")
-                print(f"CATEGIORIA: {produto.categoria}")
-                print(f"CODIGO: {produto.codigo}")
-                print(f"PRECO SEM DESCONTO: {produto.get_preco}")
-
+                if produto != None:
+                    print(f"NOME: {produto.nome}")
+                    print(f"QUANTIDADE: {produto.quantidade_em_estoque()}")
+                    print(f"DESCONTO: {produto.get_desconto}")
+                    print(f"PRECO COM DESCONTO: {produto.preco()}")
+                    print(f"CATEGIORIA: {produto.categoria}")
+                    print(f"CODIGO: {produto.codigo}")
+                    print(f"PRECO SEM DESCONTO: {produto.get_preco}")
+                else:
+                    print("produto nao encontrado")
+                
             elif opc == 4: #atualiza desconto por codigo
                 cod = input("Digite o codigo do produto: ")
                 produto = self.loja.buscar_produto(cod)
-                desc = float(input("Digite o novo desconto (0.0-1.0): "))
+                try:
+                    desc = float(input("Digite o novo desconto (0.0-1.0): "))
+                except:
+                    print("desconto invalido")
                 produto.atualizar_desconto(desc)
 
             elif opc == 5: #registra aquisicao por codigo
                 cod = input("Digite o codigo do produto: ")
                 produto = self.loja.buscar_produto(cod)
-                qtd = int(input("Digite a quantidade adquirida junto ao fornecedor: "))
-                produto.registrar_aquisicao(qtd)
+                try:
+                    qtd = int(input("Digite a quantidade adquirida junto ao fornecedor: "))
+                except:
+                    print("quantidade invalida")
+                if produto != None:
+                    produto.registrar_aquisicao(qtd)
+                else:
+                    print("produto nao encontrado")
             
             elif opc == 6: #remove um produto da loja por codigo
                 cod = input("Digite o codigo do produto: ")
                 produto = self.loja.buscar_produto(cod)
-                self.loja.produtos.pop(produto)
+                if produto != None:
+                    self.loja.produtos.pop(self.loja.produtos.index(produto))
+                else:
+                    print("produto nao enocontrado")
 
             elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra, REVER
                 nome = input("Digite o nome: ")
                 email = input("Digite seu email: ")
                 cpf = input("Digite seu cpf: ")
-                nova_compra = self.loja.iniciar_compra(Pessoa(nome, email, cpf))
+                self.loja.iniciar_compra(Pessoa(nome, email, cpf))
 
             elif opc == 8: #utiliza o metodo cancelar compra de loja
                 self.loja.compra_aberta.cancelar_compra()
@@ -97,24 +117,40 @@ class App:
 
             elif opc == 10: #adiciona item na lista de compras
                 cod = input("Digite o codigo do produto: ")
-                qtd = int(input("Digite a quantidade do produto: "))
+                try:
+                    qtd = int(input("Digite a quantidade do produto: "))
+                except:
+                    print("quantidade invalida")   
                 produto = self.loja.buscar_produto(cod)
-                if produto not in self.loja.compras:
-                    self.loja.compra_aberta.append(Item_de_compra(produto, qtd))
+                if produto != None:
+                    if produto not in self.loja.compras:
+                        self.loja.compra_aberta.append(Item_de_compra(produto, qtd))
+                    else:
+                        print("Produto ja esta na lista de compras")
                 else:
-                    print("Produto ja esta na lista de compras")
+                    print("produto nao encontrado")
 
             elif opc == 11: #imprime a compra, duvidas aqui
-                Loja.printaCompra()
+                Loja.printa_compra_aberta()
 
             elif opc == 12: #remove o produto por indice
-                indice = int(input("Digite o indice do produto: "))
-                self.loja.compra_aberta.pop(indice-1)
+                try:
+                    indice = int(input("Digite o indice do produto: "))
+                except:
+                    print("indice inválido")
+                if indice not in range(1,len(self.loja.compra_aberta.itens)+1):
+                    print("indice incorreto")
+                self.loja.compra_aberta.itens.pop(indice-1)
 
             elif opc == 13: #atualiza a quantidade por indice, REVER AQUI
-                indice = int(input("Digite o indice do produto: "))
-                nova_qtd = int(input("Digite a nova quatidade do produto: "))
-                self.loja.compra_aberta.itens.quantidade[indice-1]= nova_qtd
+                try:
+                    indice = int(input("Digite o indice do produto: "))
+                    nova_qtd = int(input("Digite a nova quatidade do produto: "))
+                except:
+                    print("informacoes invalidas")
+                if indice not in range(1,len(self.loja.compra_aberta.itens)+1):
+                    print("indice incorreto")
+                self.loja.compra_aberta.itens[indice-1].quantidade = nova_qtd
 
             elif opc == 14:
                 pass
