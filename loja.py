@@ -11,22 +11,6 @@ from Classes_Base.compra import Compra
 # Item_de_compra = Classes_Base.Item_de_compra
 # Compra = Classes_Base.Compra
 
-
-def printaCompra (compra:Compra):
-    print(f"Nome: {compra.cliente.nome}")
-    print(f"email: {compra.cliente.email}")
-    print(f"cpf: {compra.cliente.cpf}")
-    for item in compra.itens:
-        print(f"quantidade: {item.quantidade}")
-        print(f"prod_nome: {item.produto.nome}")
-        print(f"prod_preco: {item.produto.get_preco()}")
-        print(f"prod_quantidade: {item.produto.quantidade_em_estoque()}")
-        print(f"prod_desconto: {item.produto.get_desconto()}")
-        print(f"prod_categoria: {item.produto.categoria}")
-        print(f"prod_preco: {item.produto.codigo}")
-
-
-
 class Loja():
     
     def __init__(self):
@@ -65,6 +49,18 @@ class Loja():
             self.produtos[vendidos_indice[j]].registrar_venda(vendidos_quantidade[j])
         self.compras.append(self.compra_aberta)
         self.compra_aberta = None   
+
+    def printa_compra_aberta (self):
+        print("-> Cliente: ")
+        print(f"- Nome: {self.compra_aberta.cliente.nome}")
+        print(f"- Email: {self.compra_aberta.cliente.email}")
+        print(f"- CPF: {self.compra_aberta.cliente.cpf}")
+        for item in self.compra_aberta.itens:
+            print(f"Item {self.compra_aberta.itens.index(item)}: {item.produto.nome}")
+            print(f"Quantidade desejada: {item.quantidade}")
+            print(f"Preco unitario: {item.produto.preco()}")
+            print(f"Categoria: {item.produto.categoria}")
+            print(f"Codigo: {item.produto.codigo}")
   
     def r_numero_produtos(self) -> int:
         produtos_v = 0
@@ -261,3 +257,17 @@ class Loja():
 # loj.compra_aberta.adicionar_produto(produto_3,2)
 # print(f"item_quantidade = {loj.compras[1].itens[1].quantidade}")
 ## loj.salvar("loja.txt")
+
+# def printaCompra (compra:Compra):
+#     print(f"Nome: {compra.cliente.nome}")
+#     print(f"email: {compra.cliente.email}")
+#     print(f"cpf: {compra.cliente.cpf}")
+#     for item in compra.itens:
+#         print(f"quantidade: {item.quantidade}")
+#         print(f"prod_nome: {item.produto.nome}")
+#         print(f"prod_preco: {item.produto.get_preco()}")
+#         print(f"prod_quantidade: {item.produto.quantidade_em_estoque()}")
+#         print(f"prod_desconto: {item.produto.get_desconto()}")
+#         print(f"prod_categoria: {item.produto.categoria}")
+#         print(f"prod_preco: {item.produto.codigo}")
+
