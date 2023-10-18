@@ -61,6 +61,8 @@ class Loja():
             print(f"Preco unitario: {item.produto.preco()}")
             print(f"Categoria: {item.produto.categoria}")
             print(f"Codigo: {item.produto.codigo}")
+        if len(self.compra_aberta.itens) == 0:
+            print("-> Nao foram adicionados itens")
   
     def r_numero_produtos(self) -> int:
         produtos_v = 0
@@ -169,8 +171,7 @@ class Loja():
 
         for i in range(len(lista_usu)):
             print(f"Nome: {lista_usu[i]} CPF: {lista_cpf[i]} Valor: {lista_gasto[i]}")
-
-        
+   
     def salvar(self, nome_arq):
         '''
         Modo de salvamento:
@@ -228,6 +229,9 @@ class Loja():
 #print(mais_caros[1].nome)
 #loj.r_5_mais_vendidos()
 #loj.r_usuarios_compras()
+##loj.iniciar_compra(Pessoa("eu","dudu@g","123"))
+##loj.compra_aberta.adicionar_produto(loj.buscar_produto("AB2"),2)
+##loj.printa_compra_aberta()
 
 
 
@@ -255,8 +259,7 @@ class Loja():
 # loj.finalizar_compra()
 # loj.iniciar_compra(outro)   
 # loj.compra_aberta.adicionar_produto(produto_3,2)
-# print(f"item_quantidade = {loj.compras[1].itens[1].quantidade}")
-## loj.salvar("loja.txt")
+# loj.salvar("loja.txt")
 
 # def printaCompra (compra:Compra):
 #     print(f"Nome: {compra.cliente.nome}")
