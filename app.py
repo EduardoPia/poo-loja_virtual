@@ -4,9 +4,11 @@ from Classes_Base.produto import Produto
 from Classes_Base.compra import Compra
 from Classes_Base.pessoa import Pessoa
 from Classes_Base.item_de_compra import Item_de_compra
+
+
 class App:
     def __init__(self):
-        self.loja = Loja()
+        self.loja = Loja().carregar("loja.txt")
 
     def menu(self):
         print("1. Cadastrar produto")
@@ -131,7 +133,7 @@ class App:
                     print("produto nao encontrado")
 
             elif opc == 11: #imprime a compra, duvidas aqui
-                loja.printa_compra_aberta()
+                self.loja.printa_compra_aberta()
 
             elif opc == 12: #remove o produto por indice
                 try:
@@ -174,13 +176,24 @@ class App:
                 print(f"EMAIL: {pessoa.email}")
                 print(f"CPF: {pessoa.cpf}")
             elif opc == 20:
-                pass
+                print("5 produtos mais caros:")
+                for produtos in self.loja.r_5_mais_caros():
+                    print(f"NOME: {produtos.nome}")
+                    print(f"Preco unitario: {produtos.preco()}")
+                    print(f"Categoria: {produtos.categoria}")
+                    print(f"Codigo: {produtos.codigo}")
 
             elif opc == 21:
-                pass
+                print("5 produtos mais vendidos:")
+                for produtos in self.loja.r_5_mais_vendidos():
+                    print(f"NOME: {produtos.nome}")
+                    print(f"Preco unitario: {produtos.preco()}")
+                    print(f"Categoria: {produtos.categoria}")
+                    print(f"Codigo: {produtos.codigo}")
 
             elif opc == 22:
-                pass
+                self.loja.r_usuarios_compras()
 
             elif opc == 23:
+                self.loja.salvar("loja2.txt")
                 break
