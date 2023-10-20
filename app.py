@@ -131,7 +131,7 @@ class App:
                     print("produto nao encontrado")
 
             elif opc == 11: #imprime a compra, duvidas aqui
-                Loja.printa_compra_aberta()
+                loja.printa_compra_aberta()
 
             elif opc == 12: #remove o produto por indice
                 try:
@@ -142,7 +142,7 @@ class App:
                     print("indice incorreto")
                 self.loja.compra_aberta.itens.pop(indice-1)
 
-            elif opc == 13: #atualiza a quantidade por indice, REVER AQUI
+            elif opc == 13: #atualiza a quantidade por indice
                 try:
                     indice = int(input("Digite o indice do produto: "))
                     nova_qtd = int(input("Digite a nova quatidade do produto: "))
@@ -153,23 +153,26 @@ class App:
                 self.loja.compra_aberta.itens[indice-1].quantidade = nova_qtd
 
             elif opc == 14:
-                pass
+                print(f"Numero de produtos: {self.loja.r_numero_produtos()}")
 
             elif opc == 15:
-                pass
+                print(f"Numero de vendas: {self.loja.r_numero_vendas()}")
 
             elif opc == 16:
-                pass
+                print(f"Valor total vendido: {self.loja.r_valor_tot_vend()}")
 
             elif opc == 17:
-                pass
+                print(f"Valor medio das compras: {self.loja.r_valor_med_compras()}")
 
             elif opc == 18:
-                pass
+                print(f"Numero de usuarios: {self.loja.r_numero_usuarios()}")
 
             elif opc == 19:
-                pass
-
+                pessoa = self.loja.r_usuario_mais_compras()
+                print(f"Usuario que mais fez compras:")
+                print(f"NOME: {pessoa.nome}")
+                print(f"EMAIL: {pessoa.email}")
+                print(f"CPF: {pessoa.cpf}")
             elif opc == 20:
                 pass
 
