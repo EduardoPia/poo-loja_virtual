@@ -123,7 +123,7 @@ class Loja():
                     break
             top.append(produto)
         top_5:list(Produto) = []
-        for i in range(len(top)):
+        for i in range(min(len(top))):
             top_5.append(top[i])
         return top_5
     
