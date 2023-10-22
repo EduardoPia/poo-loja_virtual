@@ -554,6 +554,3 @@ class App:
         self.menu()
         
         self.win.mainloop()
- 
-aplicativo = App()
-aplicativo.executar()
