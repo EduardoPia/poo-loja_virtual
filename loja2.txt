@@ -1,6 +1,0 @@
-produto,leite,5.0,5,0.0,comida,AB1
-produto,molho,3.0,6,0.0,comida,AB2
-produto,geladeira,1000.1,7,0.0,eletrodomestico,AB3
-compra,eduardo,dudu@gm,198,2,leite,5.0,1,0.0,comida,AB1
-compra,outro,outro@gmai,197,3,leite,5.0,1,0.0,comida,AB1,3,molho,3.0,1,0.0,comida,AB2
-compra,outro,outro@gmai,197,1,molho,3.0,1,0.0,comida,AB2

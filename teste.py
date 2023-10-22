@@ -1,14 +1,29 @@
+
 from tkinter import *
+from tkinter import ttk
 
+# Crie uma janela principal
+root = Tk()
+root.title("Janela com Scrollbar")
 
-window = Tk()
+main_frame = Frame(root)
+main_frame.pack(fill=BOTH, expand=1)
 
-def click():
-    ola = Label(window, text = "ola")
-    ola.grid(row = 1, column= 0)
-    oi = Label(window, text = "oi")
-    oi.grid(row = 1, column= 0)
-myButton = Button(window, text = "Hello there!", command=click)
-myButton.grid(row = 0, column=0)
+my_canvas = Canvas(main_frame)
+my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
 
-window.mainloop()
+my_scrollbar = ttk.Scrollbar(main_frame, orient = VERTICAL, command=my_canvas.yview)
+my_scrollbar.pack(side=RIGHT, fill=Y)
+
+my_canvas.configure(yscrollcommand=my_scrollbar.set)
+my_canvas.bind('<Configure>',lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+
+second_frame = Frame(my_canvas)
+my_canvas.create_window((0,0), window=second_frame, anchor="nw")
+
+for i in range(100):
+    resultado = Label(second_frame, text = "Falha ao cadastrar")
+    resultado.grid(row = i, column = i)
+
+# Inicie a janela principal
+root.mainloop()
