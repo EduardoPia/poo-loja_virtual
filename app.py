@@ -1,9 +1,11 @@
 # Definicao da classe app, que sera utilizada para mediar a interacao do programa com o usuario
+import tkinter as tk
 from loja import Loja
 from Classes_Base.produto import Produto
 from Classes_Base.compra import Compra
 from Classes_Base.pessoa import Pessoa
 from Classes_Base.item_de_compra import Item_de_compra
+
 
 
 class App:
