@@ -56,7 +56,7 @@ class Loja():
         print(f"- Email: {self.compra_aberta.cliente.email}")
         print(f"- CPF: {self.compra_aberta.cliente.cpf}")
         for item in self.compra_aberta.itens:
-            print(f"Item {self.compra_aberta.itens.index(item)}: {item.produto.nome}")
+            print(f"Item {self.compra_aberta.itens.index(item)+1}: {item.produto.nome}")
             print(f"Quantidade desejada: {item.quantidade}")
             print(f"Preco unitario: {item.produto.preco()}")
             print(f"Categoria: {item.produto.categoria}")
@@ -116,14 +116,21 @@ class Loja():
     
     def r_5_mais_caros(self) -> list:
         top:list(Produto) = []
+        continuar = 0
         for produto in self.produtos:
             for prod in top:
+                if produto.codigo == prod.codigo:
+                    continuar = 1
+                    break
                 if produto.preco() > prod.preco():
                     top.insert(top.index(prod),produto)
+                    continuar = 1
                     break
-            top.append(produto)
+            if continuar != 1:
+                top.append(produto)
+            continuar = 0
         top_5:list(Produto) = []
-        for i in range(min(len(top))):
+        for i in range(min(5,len(top))):
             top_5.append(top[i])
         return top_5
     
@@ -202,9 +209,9 @@ class Loja():
             for i in range(len(linhas)):
                 linhas[i] = linhas[i].strip("\n")
                 linhas[i] = linhas[i].split(",")
-                #print(linhas[i])
                 if linhas[i][0] == "produto":
-                    self.produtos.append(Produto(linhas[i][1],float(linhas[i][2]),linhas[i][5],linhas[i][6]))
+                    produto = Produto(linhas[i][1],float(linhas[i][2]),linhas[i][5],linhas[i][6])
+                    self.produtos.append(produto)
                     self.produtos[i].registrar_aquisicao(int(linhas[i][3]))
                     self.produtos[i].atualizar_desconto(float(linhas[i][4]))
                 else:
@@ -217,21 +224,22 @@ class Loja():
                         prod.atualizar_desconto(float(linhas[i][7*j+8]))
                         self.compras[len(self.compras)-1].itens.append(Item_de_compra(prod,int(linhas[i][7*j+4])))                        
              
-#loj = Loja()
-#loj.carregar("loja.txt")
+loj = Loja()
+loj.carregar("loja.txt")
 #print(loj.r_numero_produtos())
 #print(loj.r_numero_vendas())
 #print(loj.r_valor_tot_vend())
 #print(loj.r_valor_med_compras())
 #print(loj.r_numero_usuarios())
 #print(loj.r_usuario_mais_compras().nome)
-#mais_caros = loj.r_5_mais_caros()
-#print(mais_caros[1].nome)
+mais_caros = loj.r_5_mais_caros()
+print(mais_caros[0].nome)
+print(mais_caros[2].nome)
 #loj.r_5_mais_vendidos()
 #loj.r_usuarios_compras()
-##loj.iniciar_compra(Pessoa("eu","dudu@g","123"))
-##loj.compra_aberta.adicionar_produto(loj.buscar_produto("AB2"),2)
-##loj.printa_compra_aberta()
+#loj.iniciar_compra(Pessoa("eu","dudu@g","123"))
+#loj.compra_aberta.adicionar_produto(loj.buscar_produto("AB2"),2)
+#loj.printa_compra_aberta()
 
 
 
@@ -245,8 +253,9 @@ class Loja():
 # loj.produtos.append(produto_1)
 # loj.produtos.append(produto_2)
 # loj.produtos.append(produto_3)
-# loj.produtos[0].registrar_aquisicao(5)
-# loj.produtos[1].registrar_aquisicao(5)
+# loj.produtos[0].registrar_aquisicao(10)
+# loj.produtos[1].registrar_aquisicao(10)
+# loj.produtos[2].registrar_aquisicao(7)
 # loj.iniciar_compra(eu)
 # loj.compra_aberta.adicionar_produto(produto_1,2)
 # loj.finalizar_compra()
