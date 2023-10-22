@@ -12,6 +12,7 @@ class App:
     def __init__(self):
         self.loja = Loja()
         self.loja.carregar("loja.txt")
+        self.win = tk.Tk()
 
     def menu(self):
         print("1. Cadastrar produto")
@@ -111,7 +112,7 @@ class App:
                 else:
                     print("produto nao enocontrado")
 
-            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra, REVER
+            elif opc == 7: #pede nome, email, cpf, para utilizar metodo iniciar_compra
                 nome = input("Digite o nome: ")
                 email = input("Digite seu email: ")
                 cpf = input("Digite seu cpf: ")

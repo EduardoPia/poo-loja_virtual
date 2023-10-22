@@ -148,12 +148,11 @@ class Loja():
                     prod_vends.append(item.produto.nome)
                     qnt_vends.append(item.quantidade)
                     preco_vends.append(item.quantidade*item.produto.preco())
+        top_5 = []
         for i in range(min(5,len(qnt_vends))):
-            j = qnt_vends.index(max(qnt_vends))
-            print(f"{i}. {prod_vends[j]} R${preco_vends[j]}")  
-            prod_vends.pop(j)
-            preco_vends.pop(j)
-            qnt_vends.pop(j)
+            info = [prod_vends[i], qnt_vends[i], preco_vends[i]]
+            top_5.append(info)
+        return top_5
                      
     def r_usuarios_compras(self):
         lista_usu:list(str) = []
@@ -175,9 +174,8 @@ class Loja():
             for compra in self.compras:
                 if compra.cliente.nome == lista_usu[i]:
                     lista_gasto[i] += compra.custo()
-
-        for i in range(len(lista_usu)):
-            print(f"Nome: {lista_usu[i]} CPF: {lista_cpf[i]} Valor: {lista_gasto[i]}")
+        lista_geral = [lista_usu,lista_cpf,lista_gasto]
+        return lista_geral
    
     def salvar(self, nome_arq):
         '''

@@ -1,6 +1,6 @@
 # Arquivo que sera executado para gerar nossa loja, e utilizara os outros arquivos
 
-from app import App
+from app2 import App
 
 
 
